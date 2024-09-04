@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: Flask Test API - OpenAPI 3.0
+  description: |-
+    This is a simple test API using flask
+  version: 0.1.0
+servers:
+  - url: https://flask-test-api-pi.vercel.app/api/v1
+tags:
+  - name: search
+    description: Search operations
+  - name: internal
+    description: Mocked internal API responses
+paths:
+  /search:
+    get:
+      tags:
+        - search
+      summary: Mocked search response
+      description: Get search results
+      operationId: mockedSearch
+      parameters:
+        - name: search_query
+          in: query
+          description: Status values that need to be considered for filter
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '401':
+          description: Invalid API key
+      security:
+        - ApiKeyAuth: []
+  /internal/advisor:
+    get:
+      tags:
+        - internal
+      summary: Mocked Advisor recommendations
+      description: Get recommendations from Advisor
+      operationId: mockedInternalAdvisor
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalAPIAdvisorResponse'
+        '401':
+          description: Invalid API key
+      security:
+          - ApiKeyAuth: []
+
+components:
+  schemas:
+    SearchResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+          example: 3
+        results:
+          type: array
+          items:
+            type: string
+          example: ["hello", "world"]
+      required:
+        - count
+        - results
+    InternalAPIAdvisorResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+        recommendations:
+          $ref: '#/components/schemas/AdvisorRecommendations'
+      required:
+        - count
+        - recommendations
+    AdvisorRecommendations:
+      type: object
+      properties:
+        system_name:
+          type: string
+          example: "host1"
+        recommendation:
+          type: string
+          example: "Advisor recommends a fix."
+      required:
+        - system_name
+        - recommendation
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: x-api-key
+      in: header
