@@ -123,32 +123,33 @@
         "type": "object",
         "properties": {
           "count": {
-            "type": "integer"
+            "type": "integer",
+            "example": 1
           },
           "recommendations": {
-            "$ref": "#/components/schemas/AdvisorRecommendations"
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "system_name": {
+                  "type": "string",
+                  "example": "host1"
+                },
+                "recommendation": {
+                  "type": "string",
+                  "example": "Advisor recommends a fix for your system."
+                }
+              }
+            },
+            "required": [
+              "system_name",
+              "recommendation"
+            ]
           }
         },
         "required": [
           "count",
           "recommendations"
-        ]
-      },
-      "AdvisorRecommendations": {
-        "type": "object",
-        "properties": {
-          "system_name": {
-            "type": "string",
-            "example": "host1"
-          },
-          "recommendation": {
-            "type": "string",
-            "example": "Advisor recommends a fix."
-          }
-        },
-        "required": [
-          "system_name",
-          "recommendation"
         ]
       }
     },
