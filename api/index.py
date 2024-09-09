@@ -72,3 +72,10 @@ def search():
 @app.route('/api/v1/internal/advisor')
 def internal_advisor():
     return jsonify(internal_advisor_response)
+
+@app.route('/api/v1/internal/echo')
+def echo():
+  token = request.headers.get('x-token-text')
+  if not token:
+    return jsonify({"error": "Nothing was sent to me."}), 400
+  return jsonify({"received": token})

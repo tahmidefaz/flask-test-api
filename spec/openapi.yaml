@@ -12,6 +12,33 @@ tags:
   - name: internal
     description: Mocked internal API responses
 paths:
+  /internal/echo:
+    get:
+      tags:
+        - internal
+      summary: Sends back what you sent in the header
+      description: Get what you sent
+      operationId: echoEndpoint
+      parameters:
+        - name: x-token-text
+          in: header
+          description: Texts to send back to the user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EchoResponse'
+        '400':
+          description: Bad request
+          content:
+            application/josn:
+              schema:
+                $ref: '#/components/schemas/ErrorBadRequest'
   /search:
     get:
       tags:
@@ -58,6 +85,18 @@ paths:
 
 components:
   schemas:
+    ErrorBadRequest:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "You sent a bad request."
+    EchoResponse:
+      type: object
+      properties:
+        received:
+          type: string
+          example: "received"
     SearchResponse:
       type: object
       properties:
